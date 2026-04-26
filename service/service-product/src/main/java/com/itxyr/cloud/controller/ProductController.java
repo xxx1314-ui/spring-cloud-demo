@@ -6,9 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/product")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -17,7 +19,7 @@ public class ProductController {
     * 根据id查询商品
     * @param id 商品id
     * */
-    @GetMapping("/product/{id}")
+    @GetMapping("/{id}")
     public Product getProduct(@PathVariable("id") Long id, HttpServletRequest  request) {
         String header = request.getHeader("X-Token");
         System.out.println("X-Token: " + header);

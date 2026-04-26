@@ -3,6 +3,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.itxyr.cloud.feign.ProductFeignClient;
 import com.itxyr.cloud.order.bean.Order;
 import com.itxyr.cloud.product.bean.Product;
@@ -46,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     /*
     * 使用FeignClient发送请求
     * */
+    @SentinelResource(value = "createOrder",blockHandler = "createOrderFallback")
     @Override
     public Order createOrder(Long productId, Long userId) {
         Product product = productFeignClient.getProduct(productId);
@@ -56,6 +59,19 @@ public class OrderServiceImpl implements OrderService {
         order.setNickName("zhangsan");
         order.setAddress("东华理工大学");
         order.setProductList(Arrays.asList(product));
+        return order;
+    }
+
+    // 兜底回调
+    public Order createOrderFallback(Long productId, Long userId, BlockException e) {
+        log.error("createOrderFallback:{}", e.getMessage());
+        Order order = new Order();
+        order.setId(0L);
+        order.setTotalAmount(new BigDecimal(0));
+        order.setUserId(userId);
+        order.setNickName("未知用户");
+        order.setAddress("异常信息：" +e.getClass());
+        order.setProductList(Arrays.asList(new Product()));
         return order;
     }
 

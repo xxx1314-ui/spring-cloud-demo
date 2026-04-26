@@ -21,6 +21,10 @@ spring:
             logger-level: full
             connect-timeout: 3000 # 连接超时
             read-timeout: 4000 # 读取超时
+    sentinel:
+      transport:
+        dashboard: localhost:8090
+      eager: true
   #            request-interceptors:
   #              - com/itxyr/cloud/interceptor.XTokenRequestInterceptor 配置请求拦截器
   #  config:
@@ -36,3 +40,4 @@ logging:
 feign:
   sentinel:
     enabled: true
+

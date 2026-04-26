@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: '*'
+            allowed-headers: '*'
+            allowed-methods: '*'
+      routes:
+        - id: order-route
+          uri: lb://service-order
+          predicates:
+            - Path=/api/order/**
+#          filters:
+#            - AddResponseHeader=X-Response-Default-Foo, Bar # 为service-order添加响应头
+          filters:
+            - OnceToken=X-Response-Token, uuid
+        - id: product-route
+          uri: lb://service-product
+          predicates:
+            - Path=/api/product/**
+      default-filters:
+        - AddResponseHeader=X-Response-Default-Foo, Bar # 默认全局过滤器，全部接口添加响应头

@@ -15,11 +15,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @SpringBootApplication
-@EnableDiscoveryClient //开启服务注册与发现
+@EnableDiscoveryClient //开启服务发现
 @EnableFeignClients // 开启feign远程调用功能
 public class OrderApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrderApplication.class);
+        SpringApplication.run(OrderApplication.class,args);
     }
 
 
