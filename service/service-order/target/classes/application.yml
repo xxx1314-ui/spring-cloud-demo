@@ -1,0 +1,38 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: service-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.10.101:8848
+      config:
+        server-addr: 192.168.10.101:8848
+        namespace: test # 命名空间dev
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
+            connect-timeout: 5000
+            read-timeout: 5000
+          service-order:
+            logger-level: full
+            connect-timeout: 3000 # 连接超时
+            read-timeout: 4000 # 读取超时
+  #            request-interceptors:
+  #              - com/itxyr/cloud/interceptor.XTokenRequestInterceptor 配置请求拦截器
+  #  config:
+  #    import: nacos:service-order.properties
+  config:
+    import:
+      - nacos:common.properties?group=order # order组
+      - nacos:database.properties?group=order
+logging:
+  level:
+    com.itxyr.cloud.feign: debug  # feign日志级别
+
+feign:
+  sentinel:
+    enabled: true

@@ -1,0 +1,12 @@
+server:
+  port: 9000
+spring:
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false
+      discovery:
+        server-addr: 192.168.10.101:8848
+  application:
+    name: service-product
